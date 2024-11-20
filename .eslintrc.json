@@ -1,0 +1,46 @@
+{
+  "env": {
+    "node": true, // Enable Node.js global variables and Node.js scoping
+    "es2021": true // Enable ECMAScript 2021 global variables
+  },
+  "extends": [
+    "eslint:recommended", // Base recommended ESLint rules
+    "plugin:@typescript-eslint/recommended", // TypeScript ESLint plugin recommended rules
+    "plugin:prettier/recommended" // Integrates Prettier with ESLint
+  ],
+  "parser": "@typescript-eslint/parser", // Specifies the ESLint parser for TypeScript
+  "parserOptions": {
+    "ecmaVersion": 12, // Use ECMAScript 2021
+    "sourceType": "module" // Enable ECMAScript modules
+  },
+  "plugins": [
+    "@typescript-eslint", // Enable TypeScript rules
+    "prettier" // Enable Prettier plugin for formatting
+  ],
+  "rules": {
+    "prettier/prettier": "error", // Treat Prettier errors as ESLint errors
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_" }
+    ], // Ignore unused vars that start with '_'
+    "@typescript-eslint/no-explicit-any": "error", // Disallow `any` type
+    "@typescript-eslint/explicit-module-boundary-types": "warn", // Warn if function boundaries lack explicit return types
+    "no-console": "warn", // Warn for `console.log` usage
+    "no-unused-vars": "off", // Turn off ESLint's unused var check (replaced by TS version)
+    "no-var": "error", // Disallow `var` in favor of `let` or `const`
+    "prefer-const": "error", // Prefer `const` when variables are never reassigned
+    "eqeqeq": ["error", "always"], // Enforce `===` and `!==`
+    "curly": "error", // Enforce consistent curly brace usage for all control statements
+    "no-empty-function": "error", // Disallow empty functions
+    "no-duplicate-imports": "error" // Disallow duplicate imports
+  },
+  "ignorePatterns": ["dist/", "node_modules/"], // Ignore build and dependencies folders
+  "overrides": [
+    {
+      "files": ["*.ts"],
+      "rules": {
+        "@typescript-eslint/explicit-module-boundary-types": "off" // Turn off return type warnings for tests or specific files
+      }
+    }
+  ]
+}
