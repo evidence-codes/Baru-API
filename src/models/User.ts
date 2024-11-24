@@ -1,10 +1,10 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-import { Session } from './Session';
-import { Connections } from './Connections';
-import { SpiritualHealth } from './SpiritualHealth';
+// import { Session } from './Session';
+// import { Connections } from './Connections';
+// import { SpiritualHealth } from './SpiritualHealth';
 import { Notifications } from './Notifications';
-import { Motivation } from './Motivation';
-import { Applaud } from './Applaud';
+// import { Motivation } from './Motivation';
+// import { Applaud } from './Applaud';
 
 export enum Roles {
   ADMIN = 'admin',
@@ -55,11 +55,11 @@ export class User {
   })
   notifications!: Notifications[];
 
-  @OneToMany(() => SpiritualHealth, (spiritualHealth) => spiritualHealth.user, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  spiritualHealthRecords!: SpiritualHealth[];
+  // @OneToMany(() => SpiritualHealth, (spiritualHealth) => spiritualHealth.user, {
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // spiritualHealthRecords!: SpiritualHealth[];
 
   @Column({ type: 'int', default: 0 })
   totalPoints: number = 0;
@@ -79,17 +79,17 @@ export class User {
   @Column({ type: 'varchar', length: 255, nullable: true })
   profilePictureUrl?: string;
 
-  @OneToMany(() => Motivation, (motivation) => motivation.sender, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  motivationsSent?: Motivation[];
+  // @OneToMany(() => Motivation, (motivation) => motivation.sender, {
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // motivationsSent?: Motivation[];
 
-  @OneToMany(() => Applaud, (applaud) => applaud.sender, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  applaudsSent?: Applaud[];
+  // @OneToMany(() => Applaud, (applaud) => applaud.sender, {
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // applaudsSent?: Applaud[];
 
   @Column({ type: 'varchar', length: 255, default: 'UTC' })
   timezone: string = 'UTC';
@@ -97,23 +97,23 @@ export class User {
   @Column({ type: 'varchar', length: 255, nullable: true })
   bio?: string;
 
-  @OneToMany(() => Session, (session) => session.user, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  sessions!: Session[];
+  // @OneToMany(() => Session, (session) => session.user, {
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // sessions!: Session[];
 
-  @OneToMany(() => Connections, (connection) => connection.sender, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  sentConnections!: Connections[];
+  // @OneToMany(() => Connections, (connection) => connection.sender, {
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // sentConnections!: Connections[];
 
-  @OneToMany(() => Connections, (connection) => connection.receiver, {
-    cascade: true,
-    onDelete: 'CASCADE',
-  })
-  receivedConnections!: Connections[];
+  // @OneToMany(() => Connections, (connection) => connection.receiver, {
+  //   cascade: true,
+  //   onDelete: 'CASCADE',
+  // })
+  // receivedConnections!: Connections[];
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
   createdAt: Date = new Date();

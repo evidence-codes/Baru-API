@@ -12,16 +12,16 @@ import { generalError, notFound } from './middlewares/error.handler';
 import { BullAdapter } from '@bull-board/api/bullAdapter';
 import { createBullBoard } from '@bull-board/api';
 import { ExpressAdapter } from '@bull-board/express';
-import { reminderQueue } from './queues/reminderQueue';
+// import { reminderQueue } from './queues/reminderQueue';
 
-import { pointDeductionQueue } from './queues/pointDeductionQueue';
-import { achievementQueue } from './queues/achievementQueue';
-import { giftQueue } from './queues/giftQueue';
+// import { pointDeductionQueue } from './queues/pointDeductionQueue';
+// import { achievementQueue } from './queues/achievementQueue';
+// import { giftQueue } from './queues/giftQueue';
 import { notificationQueue } from './queues/notificationQueue';
 import { otpQueue } from './queues/otpQueue';
-import { spiritualHealthUserCreationQueue } from './queues/ConnectionSpiritualHealthQueue';
-import { connectionSyncQueue } from './queues/connectionSyncResetQueue';
-import { noConnectionSessionScheduledQueue } from './queues/NoSessionScheduleQueue';
+// import { spiritualHealthUserCreationQueue } from './queues/ConnectionSpiritualHealthQueue';
+// import { connectionSyncQueue } from './queues/connectionSyncResetQueue';
+// import { noConnectionSessionScheduledQueue } from './queues/NoSessionScheduleQueue';
 
 const app = express();
 
@@ -62,18 +62,18 @@ serverAdapter.setBasePath('/bull/queues');
 
 createBullBoard({
   queues: [
-    reminderQueue && new BullAdapter(reminderQueue),
+    // reminderQueue && new BullAdapter(reminderQueue),
 
-    achievementQueue && new BullAdapter(achievementQueue),
-    pointDeductionQueue && new BullAdapter(pointDeductionQueue),
+    // achievementQueue && new BullAdapter(achievementQueue),
+    // pointDeductionQueue && new BullAdapter(pointDeductionQueue),
     otpQueue && new BullAdapter(otpQueue),
-    giftQueue && new BullAdapter(giftQueue),
+    // giftQueue && new BullAdapter(giftQueue),
     notificationQueue && new BullAdapter(notificationQueue),
-    spiritualHealthUserCreationQueue &&
-      new BullAdapter(spiritualHealthUserCreationQueue),
-    connectionSyncQueue && new BullAdapter(connectionSyncQueue),
-    noConnectionSessionScheduledQueue &&
-      new BullAdapter(noConnectionSessionScheduledQueue),
+    // spiritualHealthUserCreationQueue &&
+    //   new BullAdapter(spiritualHealthUserCreationQueue),
+    // connectionSyncQueue && new BullAdapter(connectionSyncQueue),
+    // noConnectionSessionScheduledQueue &&
+    //   new BullAdapter(noConnectionSessionScheduledQueue),
   ].filter(Boolean), // Remove any undefined adapters
   serverAdapter,
 });

@@ -22,11 +22,12 @@ export const config = {
     api_secret: getEnvValue('CLOUDINARY_API_SECRET'),
   },
   db: {
-    username: getEnvValue('DB_USERNAME'),
-    password: getEnvValue('DB_PASSWORD'),
-    host: getEnvValue('DB_HOST'),
-    port: getEnvValue('DB_PORT'),
-    database: getEnvValue('DB_NAME'),
+    // username: getEnvValue('DB_USERNAME'),
+    // password: getEnvValue('DB_PASSWORD'),
+    // host: getEnvValue('DB_HOST'),
+    // port: getEnvValue('DB_PORT'),
+    // database: getEnvValue('DB_NAME'),
+    uri: getEnvValue('DB_URI'),
   },
   redis: {
     host: getEnvValue('REDIS_HOST'),
@@ -34,12 +35,12 @@ export const config = {
     password: getEnvValue('REDIS_PASSWORD'),
     retryStrategy: (times: number) => Math.min(times * 50, 2000), // Retry with backoff
   },
-  mailgun: {
-    api_key: getEnvValue('MAILGUN_API_KEY'),
-    domain: getEnvValue('MAILGUN_DOMAIN'),
-    sender_name: getEnvValue('MAILGUN_SENDER_NAME'),
-    sender_email: getEnvValue('MAILGUN_SENDER_EMAIL'),
-  },
+  // mailgun: {
+  //   api_key: getEnvValue('MAILGUN_API_KEY'),
+  //   domain: getEnvValue('MAILGUN_DOMAIN'),
+  //   sender_name: getEnvValue('MAILGUN_SENDER_NAME'),
+  //   sender_email: getEnvValue('MAILGUN_SENDER_EMAIL'),
+  // },
   clientUrl: getEnvValue('CLIENT_URL'),
   smtp: {
     host: getEnvValue('SMTP_HOST'),

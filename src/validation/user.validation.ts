@@ -1,6 +1,6 @@
 import Joi from 'joi';
 import validate from './validate';
-import { timezoneValidator } from './session.validate';
+// import { timezoneValidator } from './session.validate';
 import { Language } from '../models/User';
 
 const loginSchema = Joi.object({
@@ -17,13 +17,13 @@ const registerSchema = Joi.object({
   language: Joi.string()
     .valid(...Object.values(Language))
     .required(),
-  timezone: Joi.string()
-    .custom(timezoneValidator, 'Timezone Validation')
-    .required()
-    .messages({
-      'any.invalid':
-        'Invalid timezone. Please provide a valid IANA timezone, e.g., Africa/Lagos',
-    }),
+  // timezone: Joi.string()
+  //   .custom(timezoneValidator, 'Timezone Validation')
+  //   .required()
+  //   .messages({
+  //     'any.invalid':
+  //       'Invalid timezone. Please provide a valid IANA timezone, e.g., Africa/Lagos',
+  //   }),
 });
 
 const requestPasswordResetSchema = Joi.object({

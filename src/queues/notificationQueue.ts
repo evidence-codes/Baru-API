@@ -10,7 +10,7 @@ import {
   sendMail,
   Subjects,
 } from '../utils/email/emailHelper';
-import ConnectionService from '../services/Connection.service';
+// import ConnectionService from '../services/Connection.service';
 
 // Define notification queue
 const notificationQueue = new Queue<{
@@ -209,14 +209,14 @@ notificationQueue.process(async (job) => {
   try {
     const { user, type, message, meta_data } = job.data;
 
-    if (bgRunNotifications.includes(type)) {
-      if (type === NotificationType.FRIENDS_IN_APPLAUD_ZONE) {
-        await processFriendsInApplaudZone(user);
-      } else {
-        await processFriendsInDangerZone(user);
-      }
-      return;
-    }
+    // if (bgRunNotifications.includes(type)) {
+    //   if (type === NotificationType.FRIENDS_IN_APPLAUD_ZONE) {
+    //     await processFriendsInApplaudZone(user);
+    //   } else {
+    //     await processFriendsInDangerZone(user);
+    //   }
+    //   return;
+    // }
 
     // Save notification and send email
     const notification = await NotificationService.createNotification(
@@ -310,47 +310,47 @@ async function isRepeatableJobScheduled(
 }
 
 // Helper function for friends in danger zone
-async function processFriendsInDangerZone(user: User) {
-  try {
-    const friendsInDangerZoneCount =
-      await ConnectionService.countConnectionsWithPointsBelow25Percent(
-        user.id,
-        user.timezone,
-      );
-    if (friendsInDangerZoneCount > 0) {
-      notificationFunctions[NotificationType.FRIENDS_IN_DANGER_ZONE]({
-        user,
-        context: { link: `${config.clientUrl}` },
-      });
-    }
-  } catch (error) {
-    console.error(
-      `Error processing danger zone friends for user ${user.username}:`,
-      error,
-    );
-  }
-}
+// async function processFriendsInDangerZone(user: User) {
+//   try {
+//     const friendsInDangerZoneCount =
+//       await ConnectionService.countConnectionsWithPointsBelow25Percent(
+//         user.id,
+//         user.timezone,
+//       );
+//     if (friendsInDangerZoneCount > 0) {
+//       notificationFunctions[NotificationType.FRIENDS_IN_DANGER_ZONE]({
+//         user,
+//         context: { link: `${config.clientUrl}` },
+//       });
+//     }
+//   } catch (error) {
+//     console.error(
+//       `Error processing danger zone friends for user ${user.username}:`,
+//       error,
+//     );
+//   }
+// }
 
 // Helper function for friends in applaud zone
-async function processFriendsInApplaudZone(user: User) {
-  try {
-    const friendsInApplaudZoneCount =
-      await ConnectionService.countConnectionsWithPointsAt100Percent(
-        user.id,
-        user.timezone,
-      );
-    if (friendsInApplaudZoneCount > 0) {
-      notificationFunctions[NotificationType.FRIENDS_IN_APPLAUD_ZONE]({
-        user,
-        context: { link: `${config.clientUrl}` },
-      });
-    }
-  } catch (error) {
-    console.error(
-      `Error processing applaud zone friends for user ${user.username}:`,
-      error,
-    );
-  }
-}
+// async function processFriendsInApplaudZone(user: User) {
+//   try {
+//     const friendsInApplaudZoneCount =
+//       await ConnectionService.countConnectionsWithPointsAt100Percent(
+//         user.id,
+//         user.timezone,
+//       );
+//     if (friendsInApplaudZoneCount > 0) {
+//       notificationFunctions[NotificationType.FRIENDS_IN_APPLAUD_ZONE]({
+//         user,
+//         context: { link: `${config.clientUrl}` },
+//       });
+//     }
+//   } catch (error) {
+//     console.error(
+//       `Error processing applaud zone friends for user ${user.username}:`,
+//       error,
+//     );
+//   }
+// }
 
 export { notificationQueue };

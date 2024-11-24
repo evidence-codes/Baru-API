@@ -2,7 +2,7 @@ import { config } from '../../config/config';
 import hbs from 'nodemailer-express-handlebars';
 import path from 'path';
 import nodemailer from 'nodemailer';
-import { Session } from '../../models/Session';
+// import { Session } from '../../models/Session';
 import { Language } from '../../models/User';
 import { NotificationType } from '../../models/Notifications';
 
