@@ -17,7 +17,7 @@ import { ExpressAdapter } from '@bull-board/express';
 // import { pointDeductionQueue } from './queues/pointDeductionQueue';
 // import { achievementQueue } from './queues/achievementQueue';
 // import { giftQueue } from './queues/giftQueue';
-import { notificationQueue } from './queues/notificationQueue';
+// import { notificationQueue } from './queues/notificationQueue';
 import { otpQueue } from './queues/otpQueue';
 // import { spiritualHealthUserCreationQueue } from './queues/ConnectionSpiritualHealthQueue';
 // import { connectionSyncQueue } from './queues/connectionSyncResetQueue';
@@ -68,7 +68,7 @@ createBullBoard({
     // pointDeductionQueue && new BullAdapter(pointDeductionQueue),
     otpQueue && new BullAdapter(otpQueue),
     // giftQueue && new BullAdapter(giftQueue),
-    notificationQueue && new BullAdapter(notificationQueue),
+    // notificationQueue && new BullAdapter(notificationQueue),
     // spiritualHealthUserCreationQueue &&
     //   new BullAdapter(spiritualHealthUserCreationQueue),
     // connectionSyncQueue && new BullAdapter(connectionSyncQueue),

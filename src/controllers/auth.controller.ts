@@ -23,48 +23,68 @@ class AuthController {
 
   registerUser = catchAsync(async (req: Request, res: Response) => {
     const data: Partial<User> = req.body;
-    const password = data.password!;
     const email = convertToLowercase(data.email!);
-    const username = convertToLowercase(data.username!);
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-
-    const emailTaken = await this.authService.getUserByEmail(data.email!);
-    const usernameTaken = await this.authService.getUserByUsername(
-      data.username!,
-    );
+    const emailTaken = await this.authService.getUserByEmail(email);
 
     if (emailTaken) {
       throw new BadRequestError('Email already taken');
     }
 
-    if (usernameTaken) {
-      throw new BadRequestError('Username already taken');
-    }
     const newUser = UserModel.create({
-      ...data,
       email,
-      username,
-      password: hashedPassword,
-      role: data.role ?? Roles.USER,
     });
 
     const user = await this.authService.saveUser(newUser);
-
-    const language = user.language;
-
-    await sendWelcomeEmail({
-      to: user.email,
-      name: user.username,
-      language: language as Language,
-      link: `${config.clientUrl}/${user?.language}/login`,
-    });
 
     this.authService.sendEmailVerification(user).then(() => {});
 
     successResponse({
       res,
       message: 'User registered successfully. Please verify your email.',
+      data: user,
+    });
+  });
+
+  registerUserProfile = catchAsync(async (req: Request, res: Response) => {
+    const { fullName, phoneNumber, email, password } = req.body;
+
+    // Find the user by email
+    const user = await UserModel.findOne({ where: { email } });
+
+    if (!user) {
+      throw new BadRequestError('No account found with this email.');
+    }
+
+    // Check if the email is verified
+    if (!user.isEmailVerified) {
+      throw new BadRequestError(
+        'Email not verified. Please verify your email first.',
+      );
+    }
+
+    // Hash the new password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Update user details
+    user.fullName = fullName;
+    user.phoneNumber = phoneNumber;
+    user.password = hashedPassword;
+    user.role = Roles.USER;
+
+    // Save the updated user
+    await UserModel.save(user);
+
+    await sendWelcomeEmail({
+      to: user.email,
+      name: user.fullName?.split(' ')[0] ?? '',
+      link: `${config.clientUrl}/${user?.language}/login`,
+    });
+
+    // Respond with success
+    successResponse({
+      res,
+      message: 'User profile updated successfully.',
       data: user,
     });
   });
@@ -83,10 +103,6 @@ class AuthController {
 
     if (data.email) {
       query.email = convertToLowercase(data.email!);
-    }
-
-    if (data.username) {
-      query.username = convertToLowercase(data.username!);
     }
 
     // Find user by email or username
@@ -158,10 +174,10 @@ class AuthController {
 
     sendMail({
       to: user.email,
-      subject: Subjects['PASSWORD_CHANGE'][user.language as Language],
-      template: EmailTemplates['PASSWORD_CHANGE'][user.language as Language],
+      subject: Subjects['PASSWORD_CHANGE'],
+      template: EmailTemplates['PASSWORD_CHANGE'],
       context: {
-        name: user.username,
+        name: user.fullName?.split(' ')[0] ?? '',
         email: user.email,
       },
     }).then(() => {});

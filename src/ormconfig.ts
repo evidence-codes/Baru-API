@@ -29,7 +29,8 @@ const AppDataSource = new DataSource({
     // Motivation,
     // Applaud,
   ], // Load entities dynamically
-  migrations: ['src/migration/**/*.ts'],
+  synchronize: true,
+  // migrations: ['src/migration/**/*.ts'],
   subscribers: [],
   // ...(config.node_env === 'development' && {
   //   logging: true,

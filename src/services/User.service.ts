@@ -33,9 +33,7 @@ class UserService {
 
   async updateUserSettings(
     user: User,
-    data: Partial<
-      Pick<User, 'fullName' | 'email' | 'username' | 'dateOfBirth'>
-    >,
+    data: Partial<Pick<User, 'fullName'>>,
   ): Promise<User> {
     const updatedUser = UserRepository.merge(user, data);
     return await UserRepository.save(updatedUser);
@@ -60,10 +58,10 @@ class UserService {
     await UserRepository.save(user);
   }
 
-  async checkUserExists(username: string): Promise<boolean> {
-    const user = await UserRepository.findOneBy({ username });
-    return !!user;
-  }
+  // async checkUserExists(username: string): Promise<boolean> {
+  //   const user = await UserRepository.findOneBy({ username });
+  //   return !!user;
+  // }
   async getUserById(id: string): Promise<User | null> {
     return await UserRepository.findOneBy({ id });
   }

@@ -29,18 +29,8 @@ class UserController {
 
       const { fullName } = req.body;
 
-      const username = convertToLowercase(req.body.username);
-      const email = convertToLowercase(req.body.email);
-      let dateOfBirth: Date | null = null;
-
-      if (req.body.dateOfBirth) {
-        dateOfBirth = convertDateFromString(req.body.dateOfBirth);
-      }
       await this.userService.updateUserSettings(user, {
         fullName,
-        username,
-        email,
-        dateOfBirth: dateOfBirth!,
       });
       return successResponse({
         res,
@@ -138,8 +128,8 @@ class UserController {
 
     sendMail({
       to: user.email,
-      subject: Subjects.ACCOUNT_DELETION[user.language as Language],
-      template: EmailTemplates.DELETE_ACCOUNT[user.language as Language],
+      subject: Subjects.ACCOUNT_DELETION,
+      template: EmailTemplates.DELETE_ACCOUNT,
       context: {
         name: user.fullName,
         email: user.email,
@@ -158,9 +148,7 @@ class UserController {
     const user = await AuthService.getUserFromToken(token);
     console.log('Account deleted');
     await UserRepository.delete(user!.id);
-    return res.redirect(
-      `${config.clientUrl}/${user?.language}/create-account?isDeleted=${true}`,
-    );
+    return res.redirect(`${config.clientUrl}/create-account?isDeleted=${true}`);
   });
 
   logOutUserAccount = catchAsync(async (req: Request, res: Response) => {

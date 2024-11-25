@@ -18,19 +18,13 @@ class AuthService {
   }
 
   async requestPasswordReset(user: User): Promise<void> {
-    const locale = user.language || 'en';
-
     const token = jwt.sign({ id: user.id }, config.jwt.secret, {
       expiresIn: config.jwt.resetTokenExpiresIn,
     });
 
-    const resetLink = `${config.clientUrl}/${locale}/change-password?token=${token}`;
-
     const body = {
       to: user.email,
-      name: user.username,
-      link: resetLink,
-      language: locale as Language,
+      name: user.fullName?.split(' ')[0] ?? '',
     };
 
     // resetPasswordMail(body).then(() => {});
@@ -59,19 +53,12 @@ class AuthService {
     return null;
   }
   async getUserByEmailOrUsername(identifier: string): Promise<User | null> {
-    const user = await UserRepository.findOneBy(
-      identifier.includes('@')
-        ? { email: identifier }
-        : { username: identifier },
-    );
+    const user = await UserRepository.findOneBy({ email: identifier });
 
     return user;
   }
   async getUserByEmail(email: string): Promise<User | null> {
     return await UserRepository.findOneBy({ email });
-  }
-  async getUserByUsername(username: string): Promise<User | null> {
-    return await UserRepository.findOneBy({ username });
   }
 
   async getUserById(id: string): Promise<User | null> {
@@ -83,10 +70,8 @@ class AuthService {
 
     const body = {
       to: user.email,
-      name: user.username,
+      name: user.fullName?.split(' ')[0] ?? '',
       verificationCode,
-      language: user.language as Language,
-      link: `${config.clientUrl}/${user?.language}/login`,
     };
 
     await sendVerificationCodeEmail(body);

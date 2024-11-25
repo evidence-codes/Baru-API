@@ -4,6 +4,7 @@ import Validator from '../validation/user.validation';
 
 const {
   registerSchemaValidation,
+  registerProfileSchemaValidation,
   loginSchemaValidation,
   requestPasswordResetSchemaValidation,
   resetPasswordSchemaValidation,
@@ -17,6 +18,11 @@ authRouter.post(
   '/register',
   registerSchemaValidation,
   AuthController.registerUser,
+);
+authRouter.post(
+  '/register/profile',
+  registerProfileSchemaValidation,
+  AuthController.registerUserProfile,
 );
 authRouter.post('/login', loginSchemaValidation, AuthController.loginUser);
 authRouter.post(

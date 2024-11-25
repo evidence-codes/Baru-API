@@ -1,7 +1,6 @@
 import Joi from 'joi';
 import validate from './validate';
 // import { timezoneValidator } from './session.validate';
-import { Language } from '../models/User';
 
 const loginSchema = Joi.object({
   username: Joi.string().optional(),
@@ -10,20 +9,14 @@ const loginSchema = Joi.object({
 }).or('username', 'email');
 
 const registerSchema = Joi.object({
+  email: Joi.string().email().required(),
+});
+
+const registerProfileSchema = Joi.object({
   fullName: Joi.string().required(),
   email: Joi.string().email().required(),
-  username: Joi.string().required(),
+  phoneNumber: Joi.string().required(),
   password: Joi.string().required().min(8),
-  language: Joi.string()
-    .valid(...Object.values(Language))
-    .required(),
-  // timezone: Joi.string()
-  //   .custom(timezoneValidator, 'Timezone Validation')
-  //   .required()
-  //   .messages({
-  //     'any.invalid':
-  //       'Invalid timezone. Please provide a valid IANA timezone, e.g., Africa/Lagos',
-  //   }),
 });
 
 const requestPasswordResetSchema = Joi.object({
@@ -77,6 +70,7 @@ const updateAppSettings = Joi.object({
 export default {
   loginSchemaValidation: validate(loginSchema),
   registerSchemaValidation: validate(registerSchema),
+  registerProfileSchemaValidation: validate(registerProfileSchema),
   requestPasswordResetSchemaValidation: validate(requestPasswordResetSchema),
   resetPasswordSchemaValidation: validate(resetPasswordSchema),
   userPersonalDetailsValidation: validate(userPersonalDetails),

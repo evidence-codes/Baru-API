@@ -5,353 +5,80 @@
     <link rel='preconnect' href='https://fonts.googleapis.com' />
     <link rel='preconnect' href='https://fonts.gstatic.com' crossorigin />
     <link
-      href='https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap'
+      href='https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap'
       rel='stylesheet'
     />
-
-    <title>Document</title>
+    <title>Welcome to Our App</title>
   </head>
-  <body style='font-family: Poppins, sans-serif; margin: 0; padding: 0;'>
+  <body
+    style="font-family: 'Poppins', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4;"
+  >
     <div
-      style='
-        padding: 16px;
-        background-color: #ffffff;
-        max-width: 600px;
-        margin: 0 auto;
-      '
+      style='max-width: 600px; margin: 20px auto; background: #ffffff; border-radius: 8px; overflow: hidden;'
     >
-      <!-- Centering the logo using table layout -->
-      <table
-        width='100%'
-        cellpadding='0'
-        cellspacing='0'
-        style='background-color: #f4f4f4; margin: 0 auto; text-align: center;'
+      <header
+        style='background-color: #1e1e1e; text-align: center; padding: 20px;'
       >
-        <tr>
-          <td style='padding: 10px;'>
-            <img
-              src='https://res.cloudinary.com/dzuqktieg/image/upload/v1730659800/user_profiles/ertfwodnapapada5c0e7.png'
-              alt='Hisown logo'
-              style='width: 200px; height: auto; display: inline-block;'
-            />
-          </td>
-        </tr>
-      </table>
-
-      <div
-        style='
-          text-align: center;
-          padding: 8px;
-          background-color: #0adb80;
-          margin-top: 10px;
-        '
-      >
-        <p style='color: #ffffff; font-weight: 700; font-size: 15px'>
-          WELCOME TO HISOWN
+        <h1 style='color: #ffffff; margin: 0; font-size: 24px;'>Welcome to Our
+          App!</h1>
+      </header>
+      <div style='padding: 20px; text-align: left;'>
+        <p style='font-size: 18px; color: #333;'>
+          Hi
+          {{name}},
         </p>
-      </div>
-
-      <div style='padding-top: 10px;'>
-        <p
-          style='
-font-size: 20px;
-font-weight: 600;
-line-height: 30px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >Hey there, {{name}}!</p>
-        <p
-          style='
-font-size: 16px;
-font-weight: 400;
-line-height: 24px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >
-          We're thrilled to welcome you to the HISOWN community!<br /><br />By
-          joining us, you're stepping into a space designed to connect, empower,
-          and bring like-minded people together.<br /><br />
-          Whether you're here to grow spiritually, encourage your friends daily
-          to spend more time with God, or simply connect with your Christian
-          friends and family, we're here to support you every step of the way.
-          <br /><br />
-          To get started, please take a moment to explore the features:
-          <br /><br />
+        <p style='font-size: 16px; color: #555; line-height: 1.5;'>
+          We're thrilled to have you on board! By joining our app, you're now
+          part of a community that's dedicated to making life easier, more
+          connected, and more enjoyable.
+        </p>
+        <p style='font-size: 16px; color: #555; line-height: 1.5;'>
+          Here are some things you can do right away:
         </p>
         <ul
-          style='
-font-size: 16px;
-font-weight: 400;
-line-height: 24px;
-letter-spacing: -0.01em;
-text-align: left;
-'
+          style='padding-left: 20px; color: #555; font-size: 16px; line-height: 1.5;'
         >
-          <li>Create schedules to spend some time with God.</li>
-          <li>Invite your friends to join your community so you can encourage
-            one another to grow spiritually daily.</li>
-          <li>Connect with other Christians across the platforms community and
-            grow together!</li>
+          <li>Explore the features of our app.</li>
+          <li>Invite your friends and family to join the experience.</li>
+          <li>Reach out to our support team for any assistance.</li>
         </ul>
-
-        <br /><br />
-        <p
-          style='
-font-size: 16px;
-font-weight: 400;
-line-height: 24px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >If you ever need help, have questions, or just want to share feedback,
-          don't hesitate to reach out. We're here to help.
-          <br /><br />Welcome aboard! 🔥🥳
-          <br /><br />
-          Warm regards,
-          <br /><span
+        <p style='font-size: 16px; color: #555; line-height: 1.5;'>
+          If you have any questions or feedback, don’t hesitate to get in touch.
+          We’re here to make your experience amazing.
+        </p>
+        <div style='text-align: center; margin: 20px 0;'>
+          <a
+            href='{{link}}'
             style='
-font-size: 16px;
-font-weight: 700;
-line-height: 24px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-          >Your HISOWN Team</span></p>
-      </div>
-
-      <div
-        style='
-          text-align: center;
-          padding: 2px;
-          background-color: #005050;
-          margin-top: 40px;
-          margin-bottom: 40px;
-        '
-      >
-        <a href='{{link}}' style='text-decoration: none; color: #ffffff'><p
-            style='color: #ffffff; 
-font-size: 14px;
-font-weight: 900;
-line-height: 21px;
-letter-spacing: 0.05em;
-'
-          >SIGN IN</p></a>
-      </div>
-
-      <div
-        style='
-          border-top: 4px solid #0adb80;
-          background-color: #ecfcf5;
-          padding: 12px;
-        '
-      >
-        <p
-          style='
-font-size: 14px;
-font-weight: 700;
-line-height: 21px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >WHY ARE YOU RECEIVING THIS EMAIL?</p>
-        <p
-          style='
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >
-          This email was sent to
-          <span
-            style='
-font-size: 12px;
-font-weight: 700;
-line-height: 18px;
-letter-spacing: -0.01em;
- color: #0adb80'
-          >{{email}}</span>. If you are receiving this email it is because you
-          are an active user of the HISOWN software, if this is not the case and
-          you are not a user of our software, we would recommend you ignore this
-          email notification for security reasons.
-        </p>
-        <p
-          style='
-font-size: 14px;
-font-weight: 700;
-line-height: 21px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >PRIVACY POLICY AND DATA PROTECTION</p>
-        <p
-          style='
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >
-          Your privacy and the security of your data are of utmost importance to
-          us. We are committed to protecting the information you share with us,
-          and we will only use it in compliance with relevant privacy
-          regulations and our internal policies.
-          <br /><br />
-          Any personal data you provide or that is collected by using our
-          software will be processed in accordance with applicable data
-          protection laws, including but not limited to the General Data
-          Protection Regulation (GDPR) if applicable.
-          <br /><br />
-          For further information on how we handle your data, please refer to
-          our
-          <span
-            style='color: #0adb80; text-decoration: underline; 
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-'
-          >Privacy Policy</span>
-          and
-          <span
-            style='color: #0adb80; text-decoration: underline; 
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-'
-          >Terms and Conditions</span>. By continuing to use HISOWN software,
-          you agree to these terms and the processing of your data as described
-          in these policies.
-        </p>
-        <p
-          style='
-font-size: 14px;
-font-weight: 700;
-line-height: 21px;
-letter-spacing: -0.01em;
-text-align: left;'
-        >CONTACT US</p>
-        <p
-          style='
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >
-          If you have any questions or concerns regarding your data or wish to
-          exercise any of your rights, such as access, rectification, or
-          deletion of your data, please contact us at
-          <span
-            style='color: #0adb80; 
-font-size: 12px;
-font-weight: 700;
-line-height: 18px;
-letter-spacing: -0.01em;'
-          >hisown.official@gmail.com</span>. We are here to ensure transparency,
-          security, and control over the personal information you entrust to us.
-        </p>
-        <p
-          style='
-font-size: 14px;
-font-weight: 700;
-line-height: 21px;
-letter-spacing: -0.01em;
-text-align: left;'
-        >HELP AND SUPPORT:</p>
-        <p
-          style='
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >
-          If anything on our application is getting on your nerves, or if you're
-          experiencing an issue with the software. please do well to fill out a
-          form on our
-          <span
-            style='color: #0adb80; text-decoration: underline; font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;'
-          >help and support page</span>, and we will get back to you within
-          48hrs (Work days).
-        </p>
-
-        <p
-          style='
-font-size: 14px;
-font-weight: 700;
-line-height: 21px;
-letter-spacing: -0.01em;
-text-align: left;'
-        >LOCATION</p>
-        <p
-          style='
-font-size: 12px;
-font-weight: 400;
-line-height: 18px;
-letter-spacing: -0.01em;
-text-align: left;
-'
-        >Sieben Bauern, Minden, NRW, Germany</p>
-
-        <p
-          style='
-font-size: 14px;
-font-weight: 700;
-line-height: 21px;
-letter-spacing: -0.01em;
-text-align: left;'
-        >SOCIALS</p>
-
-        <div>
-          <img
-            src='https://res.cloudinary.com/dbpcgsyne/image/upload/v1731223252/socials/uav7ue9jkdi3ubkglhtd.png'
-            alt='fb'
-            width='36'
-            height='36'
-            style='padding: 2px; border: 2px solid white; border-radius: 50%; background-color: white; margin-right: 3px;'
-          />
-          <img
-            src='https://res.cloudinary.com/dbpcgsyne/image/upload/v1731223252/socials/kpvshczxy7amniexfnw9.png'
-            alt='ig'
-            width='36'
-            height='36'
-            style='padding: 2px; border: 2px solid white; border-radius: 50%; background-color: white; margin-right: 3px;'
-          />
-          <img
-            src='https://res.cloudinary.com/dbpcgsyne/image/upload/v1731223252/socials/auvueex58dywtwbq7bha.png'
-            alt='whatsapp'
-            width='36'
-            height='36'
-            style='padding: 2px; border: 2px solid white; border-radius: 50%; background-color: white; margin-right: 3px;'
-          />
-          <img
-            src='https://res.cloudinary.com/dbpcgsyne/image/upload/v1731223252/socials/mijityfk8zahswuyzgt7.png'
-            alt='telegram'
-            width='36'
-            height='36'
-            style='padding: 2px; border: 2px solid white; border-radius: 50%; background-color: white; margin-right: 3px;'
-          />
-          <img
-            src='https://res.cloudinary.com/dbpcgsyne/image/upload/v1731223252/socials/dguzeuc8zrowjpb1irdk.png'
-            alt='youtube'
-            width='36'
-            height='36'
-            style='padding: 2px; border: 2px solid white; border-radius: 50%; background-color: white; margin-right: 3px;'
-          />
+              background-color: #1e1e1e;
+              color: #ffffff;
+              text-decoration: none;
+              padding: 10px 20px;
+              font-size: 16px;
+              border-radius: 4px;
+            '
+          >Get Started</a>
         </div>
-
+        <p style='font-size: 16px; color: #555; line-height: 1.5;'>
+          Thanks for joining, and welcome aboard!
+        </p>
+        <p style='font-size: 16px; color: #555; line-height: 1.5;'>
+          Warm regards,<br />
+          The BARU Team
+        </p>
       </div>
+      <footer
+        style='background-color: #757575; text-align: center; padding: 10px; font-size: 12px; color: #fff;'
+      >
+        <p>You are receiving this email because you signed up for our app.</p>
+        <p>
+          If you didn’t sign up, please ignore this email, or contact us at
+          <a
+            href='mailto:support@yourapp.com'
+            style='color: #1e1e1e;'
+          >support@yourapp.com</a>.
+        </p>
+      </footer>
     </div>
   </body>
 </html>
