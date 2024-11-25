@@ -8,7 +8,7 @@ import {
 import { successResponse } from '../utils/response.handler';
 import { BadRequestError, NotFoundError } from '../utils/error';
 import { Request } from '../types/express';
-import { Language, User } from '../models/User';
+import { User } from '../models/User';
 import { convertDateFromString } from '../helper/date';
 import bcrypt from 'bcryptjs';
 import { UserRepository } from '../ormconfig';

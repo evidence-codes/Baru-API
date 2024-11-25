@@ -16,7 +16,6 @@ interface UserProfile {
 }
 
 interface AppSettings {
-  language: string;
   theme: string;
   timezone: string;
 }

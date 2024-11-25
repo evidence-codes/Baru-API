@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
 import UserRepository from '../ormconfig';
-import { Language, Roles, User } from '../models/User';
+import { Roles, User } from '../models/User';
 import { errorResponse, successResponse } from '../utils/response.handler';
 import { catchAsync, convertToLowercase } from '../utils/helpers';
 import { FindOptionsWhere } from 'typeorm';
@@ -78,7 +78,6 @@ class AuthController {
     await sendWelcomeEmail({
       to: user.email,
       name: user.fullName?.split(' ')[0] ?? '',
-      link: `${config.clientUrl}/${user?.language}/login`,
     });
 
     // Respond with success

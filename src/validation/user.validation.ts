@@ -64,7 +64,6 @@ const changeEmailSchema = Joi.object({
 
 const updateAppSettings = Joi.object({
   theme: Joi.string().valid('light', 'dark').required(),
-  language: Joi.string().required(),
 });
 
 export default {

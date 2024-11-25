@@ -2,9 +2,6 @@ import { config } from '../../config/config';
 import hbs from 'nodemailer-express-handlebars';
 import path from 'path';
 import nodemailer from 'nodemailer';
-// import { Session } from '../../models/Session';
-import { Language } from '../../models/User';
-import { NotificationType } from '../../models/Notifications';
 
 const sender = `${config.smtp.sender_name} <${config.smtp.username}>`;
 
@@ -97,17 +94,15 @@ export async function sendMail({ to, subject, template, context }: EmailData) {
 export async function sendWelcomeEmail({
   to,
   name,
-  link,
 }: {
   to: string;
   name: string;
-  link: string;
 }) {
   return sendMail({
     to,
     subject: Subjects['WELCOME'],
     template: EmailTemplates['WELCOME'],
-    context: { name, email: to, link },
+    context: { name, email: to },
   }).catch((error) => {
     console.error('Error sending welcome email:', error);
   });

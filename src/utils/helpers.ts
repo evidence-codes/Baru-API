@@ -84,3 +84,12 @@ export function generateRandomPassword(length: number = 8): string {
 export function convertToLowercase(data: string) {
   return data?.toLowerCase() || '';
 }
+
+export function generateRandomString(length: number): string {
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let result = '';
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  }
+  return result;
+}

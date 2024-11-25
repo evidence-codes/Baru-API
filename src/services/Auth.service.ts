@@ -1,4 +1,4 @@
-import { Language, User } from '../models/User';
+import { User } from '../models/User';
 import { UserRepository } from '../ormconfig';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';

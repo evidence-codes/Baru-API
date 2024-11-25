@@ -1,20 +1,12 @@
 import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
-// import { Session } from './Session';
-// import { Connections } from './Connections';
-// import { SpiritualHealth } from './SpiritualHealth';
 import { Notifications } from './Notifications';
-// import { Motivation } from './Motivation';
-// import { Applaud } from './Applaud';
+import { Package } from './Packages';
 
 export enum Roles {
   ADMIN = 'admin',
   SUPER_ADMIN = 'super_admin',
   USER = 'user',
-}
-export enum Language {
-  ENGLISH = 'en',
-  UKRAINIAN = 'uk',
-  GERMAN = 'de',
+  DISPATCHER = 'dispatcher',
 }
 
 @Entity()
@@ -45,6 +37,12 @@ export class User {
     onDelete: 'CASCADE',
   })
   notifications!: Notifications[];
+
+  @OneToMany(() => Package, (pkg) => pkg.sender, {
+    cascade: true,
+    onDelete: 'CASCADE',
+  })
+  sentPackages!: Package[];
 
   @Column({ type: 'enum', enum: Roles, default: Roles.USER })
   role: Roles = Roles.USER;
