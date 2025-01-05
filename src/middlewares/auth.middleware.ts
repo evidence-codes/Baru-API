@@ -17,6 +17,7 @@ export const isAuthenticated = async (
   next: NextFunction,
 ) => {
   const authorizationHeader = req.headers['authorization'];
+  console.log({ authorizationHeader });
   if (!authorizationHeader) {
     return next(new UnauthorizedError('No authentication token provided.'));
   }

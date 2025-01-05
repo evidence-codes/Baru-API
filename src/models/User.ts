@@ -1,6 +1,13 @@
-import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm';
+import {
+  Entity,
+  PrimaryGeneratedColumn,
+  Column,
+  OneToMany,
+  OneToOne,
+} from 'typeorm';
 import { Notifications } from './Notifications';
 import { Package } from './Packages';
+import { CourierDetails } from './Courier';
 
 export enum Roles {
   ADMIN = 'admin',
@@ -43,6 +50,9 @@ export class User {
     onDelete: 'CASCADE',
   })
   sentPackages!: Package[];
+
+  @OneToOne(() => CourierDetails, (courierDetails) => courierDetails.user)
+  courierDetails!: CourierDetails;
 
   @Column({ type: 'enum', enum: Roles, default: Roles.USER })
   role: Roles = Roles.USER;

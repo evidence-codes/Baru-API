@@ -90,6 +90,7 @@ class AuthController {
 
   loginUser = catchAsync(async (req: Request, res: Response) => {
     const data = req.body;
+    console.log(data);
 
     if (!data.email && !data.username) {
       throw new BadRequestError('Email or username is required');
@@ -106,6 +107,7 @@ class AuthController {
 
     // Find user by email or username
     const user = await UserModel.findOneBy(query);
+    console.log(user);
 
     if (!user) {
       throw new BadRequestError('Invalid credentials');
@@ -113,6 +115,14 @@ class AuthController {
 
     if (user.isEmailVerified === false) {
       throw new BadRequestError('Please verify your email');
+    }
+
+    if (!data.password || typeof data.password !== 'string') {
+      throw new BadRequestError('Password must be provided as a string');
+    }
+
+    if (!user.password || typeof user.password !== 'string') {
+      throw new BadRequestError('Invalid stored password format');
     }
 
     const isPasswordValid = await bcrypt.compare(data.password, user.password);
@@ -190,6 +200,8 @@ class AuthController {
 
   verifyEmail = catchAsync(async (req: Request, res: Response) => {
     const { email, otp } = req.body;
+
+    console.log(req.body);
 
     if (!email || !otp) {
       throw new BadRequestError('Email and OTP are required');
