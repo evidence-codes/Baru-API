@@ -34,8 +34,20 @@ class PackageService {
     weight: number, // in kg
     distance: number, // in km
     category: string, // e.g. "fragile", "oversized"
-    vehicleType: string, // e.g. "bike", "car", "truck"
+    preferredVehicle: string, // e.g. "bike", "car", "truck"
   ): Promise<number> {
+    // Validate inputs
+    if (typeof category !== 'string' || !category.trim()) {
+      throw new TypeError(
+        'Invalid or missing category. It must be a non-empty string.',
+      );
+    }
+    if (typeof preferredVehicle !== 'string' || !preferredVehicle.trim()) {
+      throw new TypeError(
+        'Invalid or missing vehicleType. It must be a non-empty string.',
+      );
+    }
+
     // Define Naira pricing for weight and distance
     const pricePerKg = 500; // ₦500 per kg
     const pricePerKm = 50; // ₦50 per km
@@ -64,7 +76,7 @@ class PackageService {
     const categoryCharge = categoryCharges[category.toLowerCase()] || 0;
 
     // Add vehicle type cost
-    const vehicleCost = vehicleCosts[vehicleType.toLowerCase()] || 0;
+    const vehicleCost = vehicleCosts[preferredVehicle.toLowerCase()] || 0;
 
     // Total delivery cost in Naira (₦)
     const totalCost = weightCost + distanceCost + categoryCharge + vehicleCost;

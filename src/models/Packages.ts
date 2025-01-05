@@ -41,8 +41,8 @@ export class Package {
   @Column({ type: 'float' })
   value!: number;
 
-  @Column({ type: 'simple-json', nullable: true })
-  preferredVehicle?: string[];
+  @Column({ type: 'varchar', nullable: true })
+  preferredVehicle?: string;
 
   @Column({ type: 'varchar', length: 255 })
   pickupLocation!: string;
@@ -57,14 +57,29 @@ export class Package {
   distance?: number;
 
   @Column({ type: 'float' })
+  eta?: number;
+
+  @Column({ type: 'float' })
   deliveryCost?: number;
 
   @Column({ type: 'enum', enum: PackageStatus, default: PackageStatus.PENDING })
   status: PackageStatus = PackageStatus.PENDING;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt: Date = new Date();
+  @Column({ type: 'float', nullable: true })
+  currentLatitude?: number;
+
+  @Column({ type: 'float', nullable: true })
+  currentLongitude?: number;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  courierName?: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  courierPhoneNumber?: string;
 
   @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt: Date = new Date();
+  lastUpdatedAt: Date = new Date();
+
+  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  createdAt: Date = new Date();
 }

@@ -33,13 +33,16 @@ class PackageController {
   });
 
   calculateDeliveryCost = catchAsync(async (req: Request, res: Response) => {
-    const { weight, distance, category, vehicleType } = req.body;
+    const { weight, distance, category, preferredVehicle } = req.body;
+
     const cost = await this.packageService.calculateDeliveryCost(
       weight, // in kg
       distance, // in km
       category, // e.g. "fragile", "oversized"
-      vehicleType, // e.g. "bike", "car", "truck"
+      preferredVehicle, // e.g. "bike", "car", "truck"
     );
+    console.log(req.body);
+    console.log(cost);
     return successResponse({
       res,
       message: 'Delivery cost calculated',
@@ -106,6 +109,77 @@ class PackageController {
       res,
       message: 'Package delivery has been canceled successfully.',
       data: pkg,
+    });
+  });
+
+  getPackageStatus = catchAsync(async (req, res) => {
+    const { trackingID } = req.params;
+
+    if (!trackingID) {
+      throw new BadRequestError('Tracking ID is required');
+    }
+
+    const pkg = await PackageModel.findOne({ where: { trackingID } });
+
+    if (!pkg) {
+      return res.status(404).json({ message: 'Package not found' });
+    }
+
+    return res.json({
+      status: pkg.status,
+      currentLocation: {
+        latitude: pkg.currentLatitude,
+        longitude: pkg.currentLongitude,
+      },
+      lastUpdatedAt: pkg.lastUpdatedAt,
+    });
+  });
+
+  searchPackages = catchAsync(async (req: Request, res: Response) => {
+    const { trackingId, status } = req.query;
+
+    if (!trackingId && !status) {
+      throw new BadRequestError(
+        'Please provide either a tracking ID or status to search',
+      );
+    }
+
+    const conditions: any = {};
+    if (trackingId) conditions.trackingID = trackingId;
+    if (status) conditions.status = status;
+
+    const packages = await PackageModel.find({
+      where: conditions,
+      order: {
+        lastUpdatedAt: 'DESC',
+      },
+    });
+
+    return successResponse({
+      res,
+      message: 'Packages fetched successfully',
+      data: packages,
+    });
+  });
+
+  getPackageHistory = catchAsync(async (req: Request, res: Response) => {
+    const user = req.user;
+
+    if (!user) {
+      throw new UnauthorizedError('User not authenticated');
+    }
+
+    const packageHistory = await PackageModel.find({
+      where: { sender: user },
+      order: {
+        lastUpdatedAt: 'DESC',
+      },
+    });
+
+    return successResponse({
+      res,
+      message: 'Package history fetched successfully',
+      data: packageHistory,
     });
   });
 }
