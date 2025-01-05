@@ -7,6 +7,7 @@ import { User } from './models/User';
 // import { Connections } from './models/Connections';
 import { Notifications } from './models/Notifications';
 import { Package } from './models/Packages';
+import { CourierDetails } from './models/Courier';
 // import { Gift } from './models/Gift';
 // import { Motivation } from './models/Motivation';
 // import { Applaud } from './models/Applaud';
@@ -19,7 +20,7 @@ const AppDataSource = new DataSource({
   // synchronize: true,
   // logging: false,
   // logging: ['query', 'error'],
-  entities: [User, Package, Notifications], // Load entities dynamically
+  entities: [User, Package, Notifications, CourierDetails], // Load entities dynamically
   synchronize: true,
   // migrations: ['src/migration/**/*.ts'],
   subscribers: [],
@@ -34,3 +35,4 @@ export const UserRepository = AppDataSource.getRepository(User);
 export const PackageRepository = AppDataSource.getRepository(Package);
 export const NotificationsRepository =
   AppDataSource.getRepository(Notifications);
+export const CourierRepository = AppDataSource.getRepository(CourierDetails);
