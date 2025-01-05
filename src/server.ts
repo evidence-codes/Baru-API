@@ -12,6 +12,15 @@ import AppDataSource from './ormconfig';
 
 import { Server } from 'socket.io';
 
+import { PackageRepository as Package } from './ormconfig';
+
+interface DriverLocation {
+  driverId: string;
+  latitude: number;
+  longitude: number;
+  trackingID: string; // Package the driver is delivering
+}
+
 // import redisConnect from './helper/redisConnect';
 const server = http.createServer(app);
 export const io = new Server(server);
@@ -23,8 +32,35 @@ cloudinary.config({
 });
 
 io.on('connection', (socket) => {
-  const userId = socket.handshake.query.userId as string;
-  socket.join(userId);
+  console.log('A user connected:', socket.id);
+
+  // Listen for location updates from the driver's app
+  socket.on('driver-location-update', async (data: DriverLocation) => {
+    console.log('Received location update:', data);
+
+    // Optionally save the location in the database
+    const pkg = await Package.findOne({
+      where: { trackingID: data.trackingID },
+    });
+    if (pkg) {
+      pkg.currentLatitude = data.latitude;
+      pkg.currentLongitude = data.longitude;
+      pkg.lastUpdatedAt = new Date();
+      await Package.save(pkg);
+    }
+
+    // Broadcast the location update to clients tracking the package
+    io.to(data.trackingID).emit('location-update', {
+      driverId: data.driverId,
+      latitude: data.latitude,
+      longitude: data.longitude,
+    });
+  });
+
+  // Clean up when a user disconnects
+  socket.on('disconnect', () => {
+    console.log('A user disconnected:', socket.id);
+  });
 });
 
 const PORT = process.env.PORT || 8080;
