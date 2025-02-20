@@ -10,9 +10,9 @@
     "start": "NODE_ENV=production node dist/server.js",
     "build": "npx tsc -p .",
     "postinstall": "npx tsc --build",
-    "start:dev": "npx ts-node src/server.ts",
+    "start:dev": "npx ts-node app/server.ts",
     "start:prod": "./node_modules/pm2/bin/pm2-runtime start pm2.json",
-    "lint": "eslint 'src/**/*.ts' --fix"
+    "lint": "eslint 'app/**/*.ts' --fix"
   },
   "keywords": [],
   "author": "",

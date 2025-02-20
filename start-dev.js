@@ -4,8 +4,8 @@ const { spawn } = require('child_process');
 // Set environment variables for both server and worker
 const env = { ...process.env, NODE_ENV: 'development' };
 
-const server = spawn('nodemon', ['src/server.ts'], { stdio: 'inherit', env });
-const worker = spawn('ts-node', ['src/worker.ts'], { stdio: 'inherit', env });
+const server = spawn('nodemon', ['app/server.ts'], { stdio: 'inherit', env });
+const worker = spawn('ts-node', ['app/worker.ts'], { stdio: 'inherit', env });
 
 function handleExit(code) {
   server.kill('SIGINT');
