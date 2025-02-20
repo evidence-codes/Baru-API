@@ -9,7 +9,7 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    "rootDir": "app",
 
     // Additional strictness options
     "strictNullChecks": true,
@@ -27,11 +27,11 @@
     "exactOptionalPropertyTypes": true
   },
   "include": [
-    "src/**/*.ts",
-    "src/types/**/*.d.ts",
+    "app/**/*.ts",
+    "app/types/**/*.d.ts",
     "types/express.ts",
-    "src/models/index.js",
-    "src/models/config.js"
+    "app/models/index.js",
+    "app/models/config.js"
   ],
   "exclude": ["node_modules"]
 }
