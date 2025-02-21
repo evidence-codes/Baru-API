@@ -10,11 +10,10 @@ const replyQueue = "auth_reply_queue";
  */
 const ensureChannel = async () => {
   if (!channel) {
-    throw new Error(
-      "❌ RabbitMQ channel not initialized. Call connectRabbitMQ first."
-    );
+    console.warn("⚠️ RabbitMQ channel lost. Reconnecting...");
+    await connectRabbitMQ(); // Reconnect instead of throwing an error
   }
-  return channel;
+  return channel!;
 };
 
 /**
@@ -25,6 +24,16 @@ export const connectRabbitMQ = async () => {
     console.log("🚀 Connecting to RabbitMQ...");
     const connection = await amqp.connect(process.env.RABBITMQ_URL!);
     channel = await connection.createChannel();
+
+    connection.on("close", () => {
+      console.warn("⚠️ RabbitMQ connection closed. Reconnecting...");
+      setTimeout(connectRabbitMQ, 5000); // Retry after 5 seconds
+    });
+
+    connection.on("error", (err) => {
+      console.error("❌ RabbitMQ connection error:", err);
+      setTimeout(connectRabbitMQ, 5000); // Retry after 5 seconds
+    });
 
     // Ensure queues exist
     await channel.assertQueue("auth_queue", { durable: true });
@@ -38,10 +47,21 @@ export const connectRabbitMQ = async () => {
     channel.consume("auth_queue", async (msg) => {
       if (msg) {
         try {
-          const request = JSON.parse(msg.content.toString());
-          console.log("📩 Received auth request:", request);
+          const rawMessage = msg.content.toString();
+          console.log("📩 Raw Message from Queue:", rawMessage);
 
-          // ✅ Process authentication request safely
+          let request;
+          try {
+            request = JSON.parse(rawMessage);
+          } catch (err: any) {
+            console.error("❌ JSON Parsing Error:", err.message, rawMessage);
+            (await ensureChannel()).ack(msg);
+            return; // Exit early to avoid crashing
+          }
+
+          console.log("✅ Parsed Request:", request);
+
+          // Process authentication request
           let response;
           try {
             response = await handleAuthRequest(request);
@@ -57,36 +77,36 @@ export const connectRabbitMQ = async () => {
 
           console.log("✅ Auth request handled, response:", response);
 
-          // ✅ Send response back to the replyTo queue
+          // Send response back to the replyTo queue
           if (msg.properties.replyTo) {
-            const channelInstance = await ensureChannel();
-            channelInstance.sendToQueue(
+            const ch = await ensureChannel();
+            ch.sendToQueue(
               msg.properties.replyTo,
-              Buffer.from(JSON.stringify(response)), // Ensure response is always defined
+              Buffer.from(JSON.stringify(response), "utf-8"),
               { correlationId: msg.properties.correlationId }
             );
           }
 
-          // Acknowledge message
           (await ensureChannel()).ack(msg);
         } catch (error) {
-          console.error("❌ Error processing auth request:", error);
+          console.error("❌ Unexpected error processing auth request:", error);
         }
       }
     });
 
     // Consume messages from reply queue
-    channel.consume(
-      replyQueue,
-      (msg) => {
-        if (msg) {
-          console.log("📩 Received reply:", msg.content.toString());
-        }
-      },
-      { noAck: true }
-    );
+    // channel.consume(
+    //   replyQueue,
+    //   (msg) => {
+    //     if (msg) {
+    //       console.log("📩 Received reply:", msg.content.toString());
+    //     }
+    //   },
+    //   { noAck: true }
+    // );
   } catch (error) {
     console.error("❌ RabbitMQ Connection Error:", error);
+    setTimeout(connectRabbitMQ, 5000); // Retry after 5 seconds
   }
 };
 
@@ -96,29 +116,37 @@ export const connectRabbitMQ = async () => {
 export const sendMessage = async (
   queue: string,
   message: object,
-  timeoutMs = 5000 // Set a timeout to prevent indefinite waiting
+  timeoutMs = 5000
 ): Promise<any> => {
   await ensureChannel();
+  const correlationId = randomUUID();
 
   return new Promise((resolve, reject) => {
-    const correlationId = randomUUID(); // Unique ID for tracking response
     const timeout = setTimeout(() => {
       reject(new Error("⏳ Request timed out"));
     }, timeoutMs);
 
-    // Consume response from the reply queue
+    // Start listening first
+    const consumerTag = `consumer-${correlationId}`;
+
     channel!.consume(
       replyQueue,
       (msg) => {
         if (msg?.properties.correlationId === correlationId) {
           clearTimeout(timeout);
-          resolve(JSON.parse(msg.content.toString()));
+          const response = JSON.parse(msg.content.toString());
+
+          console.log("📩 Forwarding reply to gateway:", response);
+          resolve(response);
+
+          channel!.ack(msg); // ✅ Acknowledge the message
+          channel!.cancel(consumerTag); // ✅ Remove the listener after response
         }
       },
-      { noAck: true }
+      { noAck: false, consumerTag }
     );
 
-    // Send request with replyTo queue
+    // THEN send the request
     channel!.sendToQueue(queue, Buffer.from(JSON.stringify(message)), {
       replyTo: replyQueue,
       correlationId: correlationId,

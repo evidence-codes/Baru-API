@@ -38,10 +38,19 @@ export const handleAuthRequest = async (request: {
 
   try {
     const response = await action(request.data);
-    console.log("✅ Auth action response:", response); // Debugging log
-    return response; // Ensure response is returned
-  } catch (error) {
+
+    if (response === undefined) {
+      console.error("❌ Auth action returned undefined:", request.type);
+      return {
+        error: "Auth action failed",
+        details: "Action function returned undefined",
+      };
+    }
+
+    console.log("✅ Auth action response:", response);
+    return response;
+  } catch (error: any) {
     console.error("❌ Error executing auth action:", error);
-    return { error: "Auth action failed" };
+    return { error: "Auth action failed", details: error.message };
   }
 };

@@ -6,12 +6,15 @@ export const USPhoneNumberPattern =
   /^(\+\d{1,2}\s?)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$|^(\+1\s?)?\d{10}$/;
 
 export function catchAsync<T>(fn: (msg: any) => Promise<T>) {
-  return async (msg: any): Promise<void> => {
+  return async (msg: any): Promise<T> => {
+    // ✅ Return the result
     try {
       const response = await fn(msg);
-      console.log("Success:", response); // You can publish this response if needed
+      console.log("✅ Success:", response);
+      return response; // ✅ Ensure the function result is returned
     } catch (err) {
-      console.error("Error:", err); // Log or handle the error appropriately
+      console.error("❌ Error:", err);
+      throw err; // ✅ Ensure the error is still thrown
     }
   };
 }
