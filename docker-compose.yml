@@ -1,0 +1,128 @@
+version: "3.8"
+
+services:
+  # Authentication Service
+  auth-service:
+    build: ./auth
+    container_name: auth_service
+    restart: always
+    ports:
+      - "4001:4001"
+    env_file:
+      - ./auth/.env
+    depends_on:
+      - rabbitmq
+    networks:
+      - baru-network
+
+  # Courier Service
+  # courier-service:
+  #   build: ./courier
+  #   container_name: courier_service
+  #   restart: always
+  #   ports:
+  #     - "4002:4002"
+  #   env_file:
+  #     - ./courier/.env
+  #   depends_on:
+  #     - postgres
+  #     - rabbitmq
+  #   networks:
+  #     - baru-network
+
+  # # User Service
+  # user-service:
+  #   build: ./user
+  #   container_name: user_service
+  #   restart: always
+  #   ports:
+  #     - "4003:4003"
+  #   env_file:
+  #     - ./user/.env
+  #   depends_on:
+  #     - postgres
+  #     - rabbitmq
+  #   networks:
+  #     - baru-network
+
+  # # Package Service
+  # package-service:
+  #   build: ./package
+  #   container_name: package_service
+  #   restart: always
+  #   ports:
+  #     - "4004:4004"
+  #   env_file:
+  #     - ./package/.env
+  #   depends_on:
+  #     - postgres
+  #     - rabbitmq
+  #   networks:
+  #     - baru-network
+
+  # # Notification Service
+  # notification-service:
+  #   build: ./notification
+  #   container_name: notification_service
+  #   restart: always
+  #   ports:
+  #     - "4005:4005"
+  #   env_file:
+  #     - ./notification/.env
+  #   depends_on:
+  #     - postgres
+  #     - rabbitmq
+  #   networks:
+  #     - baru-network
+
+  # API Gateway
+  gateway:
+    build: ./gateway
+    container_name: api_gateway
+    restart: always
+    ports:
+      - "4000:4000"
+    env_file:
+      - ./gateway/.env
+    depends_on:
+      - auth-service
+      # - courier-service
+      # - user-service
+      # - package-service
+    networks:
+      - baru-network
+
+  # PostgreSQL Database
+  # postgres:
+  #   image: postgres:15
+  #   container_name: postgres_db
+  #   restart: always
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: baru_db
+  #   ports:
+  #     - "5432:5432"
+  #   networks:
+  #     - baru-network
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+
+  # RabbitMQ (for Messaging)
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_broker
+    restart: always
+    ports:
+      - "5672:5672" # AMQP protocol
+      - "15672:15672" # Management UI
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    networks:
+      - baru-network
+
+networks:
+  baru-network:
+# volumes:
+#   postgres_data:
