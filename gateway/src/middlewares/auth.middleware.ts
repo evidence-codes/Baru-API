@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 
-interface AuthRequest extends Request {
-  user: any;
+export interface AuthRequest extends Request {
+  user?: any; // Make user optional to match Express type expectations
 }
 
 export const authMiddleware = (
-  req: AuthRequest,
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
@@ -18,9 +18,8 @@ export const authMiddleware = (
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!);
-    req.user = decoded;
-    next();
-    return; // Add this line
+    (req as AuthRequest).user = decoded; // Explicitly cast to AuthRequest
+    return next();
   } catch (error) {
     return res.status(401).json({ message: "Unauthorized: Invalid token" });
   }

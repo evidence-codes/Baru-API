@@ -1,5 +1,4 @@
 import amqp from "amqplib";
-import { handleAuthRequest } from "./authQueueHandler";
 import { handleUserRequest } from "./userHandler";
 import { randomUUID } from "crypto";
 
@@ -12,9 +11,12 @@ const replyQueue = "auth_reply_queue";
 const ensureChannel = async () => {
   if (!channel) {
     console.warn("⚠️ RabbitMQ channel lost. Reconnecting...");
-    await connectRabbitMQ(); // Reconnect instead of throwing an error
+    await connectRabbitMQ();
   }
-  return channel!;
+  if (!channel) {
+    throw new Error("❌ Failed to establish RabbitMQ channel");
+  }
+  return channel;
 };
 
 /**
@@ -45,15 +47,61 @@ export const connectRabbitMQ = async () => {
       "✅ RabbitMQ connected. Listening for authentication requests..."
     );
 
-    // Process authentication requests
-    channel.consume("auth_queue", async (msg) => {
-      if (msg) await processMessage(msg, handleAuthRequest);
-    });
-
     // Process user requests
     channel.consume("user_queue", async (msg) => {
       if (msg) await processMessage(msg, handleUserRequest);
     });
+
+    // Consume messages from auth_queue
+    // channel.consume("auth_queue", async (msg) => {
+    //   if (msg) {
+    //     try {
+    //       const rawMessage = msg.content.toString();
+    //       console.log("📩 Raw Message from Queue:", rawMessage);
+
+    //       let request;
+    //       try {
+    //         request = JSON.parse(rawMessage);
+    //       } catch (err: any) {
+    //         console.error("❌ JSON Parsing Error:", err.message, rawMessage);
+    //         (await ensureChannel()).ack(msg);
+    //         return; // Exit early to avoid crashing
+    //       }
+
+    //       console.log("✅ Parsed Request:", request);
+
+    //       // Process authentication request
+    //       let response;
+    //       try {
+    //         response = await handleAuthRequest(request);
+    //         if (response === undefined) {
+    //           throw new Error("handleAuthRequest returned undefined");
+    //         }
+    //       } catch (err: any) {
+    //         response = {
+    //           error: "Failed to process request",
+    //           details: err.message,
+    //         };
+    //       }
+
+    //       console.log("✅ Auth request handled, response:", response);
+
+    //       // Send response back to the replyTo queue
+    //       if (msg.properties.replyTo) {
+    //         const ch = await ensureChannel();
+    //         ch.sendToQueue(
+    //           msg.properties.replyTo,
+    //           Buffer.from(JSON.stringify(response), "utf-8"),
+    //           { correlationId: msg.properties.correlationId }
+    //         );
+    //       }
+
+    //       (await ensureChannel()).ack(msg);
+    //     } catch (error) {
+    //       console.error("❌ Unexpected error processing auth request:", error);
+    //     }
+    //   }
+    // });
 
     // Consume messages from reply queue
     // channel.consume(
@@ -111,6 +159,7 @@ export const sendMessage = async (
     channel!.sendToQueue(queue, Buffer.from(JSON.stringify(message)), {
       replyTo: replyQueue,
       correlationId: correlationId,
+      persistent: true, // ✅ Ensures message durability
     });
   });
 };
