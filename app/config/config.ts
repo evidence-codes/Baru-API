@@ -27,7 +27,7 @@ export const config = {
     // host: getEnvValue('DB_HOST'),
     // port: getEnvValue('DB_PORT'),
     // database: getEnvValue('DB_NAME'),
-    uri: getEnvValue('DB_URI'),
+    uri: getEnvValue('DATABASE_URL'),
   },
   redis: {
     host: getEnvValue('REDIS_HOST'),
